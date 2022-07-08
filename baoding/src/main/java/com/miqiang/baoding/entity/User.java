@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 /**
  * <p>
@@ -56,5 +57,6 @@ public class User implements Serializable {
     @ApiModelProperty("登录错误次数")
     private Integer logingErrCount;
 
-
+    @ApiModelProperty("总分")
+    private BigDecimal score;
 }
