@@ -14,6 +14,10 @@ public class PublicMsgs {
 
     public static final String SAVE_ERROR = "保存失败！";
 
+    public static final String UPDATE_SUCCESS = "修改成功！";
+
+    public static final String UPDATE_ERROR = "修改失败！";
+
     public static final String ERROR = "操作失败！";
 
     public static final String PARAM_EMPTY = "请求参数不能为空！";

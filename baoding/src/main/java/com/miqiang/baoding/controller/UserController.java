@@ -12,6 +12,8 @@ import com.miqiang.baoding.service.IUserService;
 import com.miqiang.baoding.util.AssertParam;
 import com.miqiang.baoding.util.Result;
 import com.miqiang.baoding.util.query.QueryGenerator;
+import com.miqiang.baoding.vo.BaseId;
+import com.miqiang.baoding.vo.UpdateStateReq;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -90,7 +92,43 @@ public class UserController {
         return Result.error(PublicMsgs.SAVE_ERROR);
     }
 
-    // 锁定/解锁
-    // 初始化密码
+    @PostMapping("isLock")
+    @ApiOperation(value = "锁定/解锁用户")
+    public Result<?> isLock(@RequestBody UpdateStateReq req) {
+        String errMsg = AssertParam.verificationInterval(req, UpdateStateReq.class);
+        if (StringUtils.isNotBlank(errMsg)) {
+            return Result.error(errMsg, null);
+        }
+        User user = service.getById(req.getId());
+        if (null == user) {
+            return Result.error(PublicMsgs.UPDATE_DATA_NOT_EXIST);
+        }
+        user.setState(req.getState());
+        boolean isSuccess = service.updateById(user);
+        if (isSuccess) {
+            return Result.OK(PublicMsgs.UPDATE_SUCCESS);
+        }
+        return Result.error(PublicMsgs.UPDATE_ERROR);
+    }
+
+    @PostMapping("initPass")
+    @ApiOperation(value = "初始化密码")
+    public Result<?> initPass(@RequestBody BaseId req) {
+        String errMsg = AssertParam.verificationInterval(req);
+        if (StringUtils.isNotBlank(errMsg)) {
+            return Result.error(errMsg, null);
+        }
+        User user = service.getById(req.getId());
+        if (null == user) {
+            return Result.error(PublicMsgs.UPDATE_DATA_NOT_EXIST);
+        }
+        String realPass = DigestUtils.md5Hex(PublicParams.DEFAULT_PASS + user.getSalt());
+        user.setPassword(realPass);
+        boolean isSuccess = service.updateById(user);
+        if (isSuccess) {
+            return Result.OK(PublicMsgs.UPDATE_SUCCESS);
+        }
+        return Result.error(PublicMsgs.UPDATE_ERROR);
+    }
 
 }

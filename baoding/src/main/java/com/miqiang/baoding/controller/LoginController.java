@@ -1,6 +1,6 @@
 package com.miqiang.baoding.controller;
 
-import com.miqiang.baoding.UserVo;
+import com.miqiang.baoding.vo.UserVo;
 import com.miqiang.baoding.common.PublicMsgs;
 import com.miqiang.baoding.common.PublicParams;
 import com.miqiang.baoding.entity.User;
