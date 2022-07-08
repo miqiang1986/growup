@@ -15,6 +15,7 @@ import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.schema.ModelRef;
 import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.Contact;
 import springfox.documentation.service.Parameter;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
@@ -31,68 +32,51 @@ import java.util.stream.Collectors;
  */
 @EnableSwagger2
 @Configuration
-@Profile({"dev","test","poc","future", "local"})
+//@Profile({"dev","test","poc","future", "local"})
 public class SwaggerConfig {
 
+    /**
+     * 创建api实例
+     * @return
+     */
     @Bean
-    public Docket authzApi() {
-        //增加头部参数
-        ParameterBuilder headerParam = new ParameterBuilder();
-        headerParam.name("token").description("token").modelRef(new ModelRef("string")).parameterType("header").required(false).build();
-
-        /*ParameterBuilder appKeyParam = new ParameterBuilder();
-        appKeyParam.name("appKey").description("appKey").modelRef(new ModelRef("string")).parameterType("header").required(false).build();*/
-        List<Parameter> parameterList = new ArrayList<Parameter>();
-        parameterList.add(headerParam.build());
-        //parameterList.add(appKeyParam.build());
+    public Docket createRestAoi(){
         return new Docket(DocumentationType.SWAGGER_2)
-                .apiInfo(apiInfo("接口文档","接口文档","1.0.0")) .select()
+                //用来创建该API的基本信息，展示在文档的页面中（自定义展示的信息）
+                .apiInfo(apiInfo())
+                //设置哪些接口暴露给Swagger展示
+                .select()
+                //过滤的接口
+                .apis(RequestHandlerSelectors.basePackage("com.miqiang.**.controller"))
+                //扫描所有有注解的api，用这种方式更灵活，指定为ApiOperation.class
                 .apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))
-                //.apis(RequestHandlerSelectors.basePackage("com.*.*"))
-                .apis(RequestHandlerSelectors.withClassAnnotation(Api.class))
                 .paths(PathSelectors.any())
-                .build()
-                .groupName("v1.0.1")
-                .globalOperationParameters(parameterList).enable(true)
-                ;
+                //构建
+                .build();
     }
 
 
-    private ApiInfo apiInfo(String name, String description, String version) {
-        return  new ApiInfoBuilder().title(name).description(description).version(version).build();
+    /**
+     * 添加摘要信息
+     * @return
+     */
+    private ApiInfo apiInfo(){
+
+        //用ApiInfoBuilder进行定制，可以设置不同的属性，比较方便
+        return new ApiInfoBuilder()
+                //设置标题
+                .title("标题：springboot集成swagger测试")
+                //描述
+                .description("描述：用于测试集成swagger接口")
+                //作者信息
+                .contact(new Contact("miqiang",null,null))
+                //版本
+                .version("版本号：1.0")
+                //构建
+                .build();
+
+
     }
 
-    @Bean
-    public static BeanPostProcessor springfoxHandlerProviderBeanPostProcessor() {
-        return new BeanPostProcessor() {
-
-            @Override
-            public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-                if (bean instanceof WebMvcRequestHandlerProvider ) {
-                    customizeSpringfoxHandlerMappings(getHandlerMappings(bean));
-                }
-                return bean;
-            }
-
-            private <T extends RequestMappingInfoHandlerMapping> void customizeSpringfoxHandlerMappings(List<T> mappings) {
-                List<T> copy = mappings.stream()
-                        .filter(mapping -> mapping.getPatternParser() == null)
-                        .collect(Collectors.toList());
-                mappings.clear();
-                mappings.addAll(copy);
-            }
-
-            @SuppressWarnings("unchecked")
-            private List<RequestMappingInfoHandlerMapping> getHandlerMappings(Object bean) {
-                try {
-                    Field field = ReflectionUtils.findField(bean.getClass(), "handlerMappings");
-                    field.setAccessible(true);
-                    return (List<RequestMappingInfoHandlerMapping>) field.get(bean);
-                } catch (IllegalArgumentException | IllegalAccessException e) {
-                    throw new IllegalStateException(e);
-                }
-            }
-        };
-    }
 
 }
