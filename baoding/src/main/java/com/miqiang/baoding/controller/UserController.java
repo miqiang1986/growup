@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -74,6 +75,7 @@ public class UserController {
             user.setSalt(PublicParams.SALT);
             user.setState(PublicParams.STATE_ENABLE);
             user.setLogingErrCount(0);
+            user.setScore(BigDecimal.ZERO);
             isSuccess = service.save(user);
         } else {
             User oldData = service.getById(user.getId());
