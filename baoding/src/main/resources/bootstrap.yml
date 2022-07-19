@@ -3,6 +3,9 @@ server:
 spring:
   application:
     name: baoding
+  mvc:
+    pathmatch:
+      matching-strategy: ANT_PATH_MATCHER
   cloud:
     nacos:
       config:
@@ -43,5 +46,18 @@ mybatis-plus:
 logging:
   level:
     com.baomidou.mybatisplus.samples: debug
+
+swagger:
+  enabled: true
+  title: 测试接口
+  description: 描述测试接口
+  version: 1.0.0
+  contact:
+    name: miqiang
+    url:
+    email: 895318625@qq.com
+  package: com.miqiang
+  base-path: /**
+  exclude-path: /error, /ops/**
 
 

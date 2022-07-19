@@ -1,82 +1,72 @@
 package com.miqiang.baoding.config;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
-import org.springframework.util.ReflectionUtils;
-import org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMapping;
 import springfox.documentation.builders.ApiInfoBuilder;
-import springfox.documentation.builders.ParameterBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.schema.ModelRef;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
-import springfox.documentation.service.Parameter;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.spring.web.plugins.WebMvcRequestHandlerProvider;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
-
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
- * Swagger配置
+ * @author miqiang
+ * @version 1.0
+ * @description
+ * @createTime 2022-07-19  19:13
  */
-@EnableSwagger2
 @Configuration
-//@Profile({"dev","test","poc","future", "local"})
 public class SwaggerConfig {
 
-    /**
-     * 创建api实例
-     * @return
-     */
+    @Value(value = "${swagger.enabled}")
+    private boolean swaggerEnabled;
+
+    @Value(value = "${swagger.title}")
+    private String swaggerTitle;
+
+    @Value(value = "${swagger.description}")
+    private String swaggerDescription;
+
+    @Value(value = "${swagger.version}")
+    private String swaggerVersion;
+
+    @Value(value = "${swagger.package}")
+    private String swaggerPackage;
+
+    @Value(value = "${swagger.contact.name}")
+    private String swaggerContactName;
+
+    @Value(value = "${swagger.contact.url}")
+    private String swaggerContactUrl;
+
+    @Value(value = "${swagger.contact.email}")
+    private String swaggerContactEmail;
+
     @Bean
-    public Docket createRestAoi(){
+    public Docket docket() {
         return new Docket(DocumentationType.SWAGGER_2)
-                //用来创建该API的基本信息，展示在文档的页面中（自定义展示的信息）
                 .apiInfo(apiInfo())
-                //设置哪些接口暴露给Swagger展示
+                .enable(swaggerEnabled)
                 .select()
-                //过滤的接口
-                .apis(RequestHandlerSelectors.basePackage("com.miqiang.**.controller"))
-                //扫描所有有注解的api，用这种方式更灵活，指定为ApiOperation.class
-                .apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))
+                .apis(RequestHandlerSelectors.basePackage(swaggerPackage))
                 .paths(PathSelectors.any())
-                //构建
                 .build();
     }
 
-
-    /**
-     * 添加摘要信息
-     * @return
-     */
-    private ApiInfo apiInfo(){
-
-        //用ApiInfoBuilder进行定制，可以设置不同的属性，比较方便
+    //构建api文档的详细信息函数
+    private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                //设置标题
-                .title("标题：springboot集成swagger测试")
+                //页面标题
+                .title(swaggerTitle)
+                //创建人
+                .contact(new Contact(swaggerContactName, swaggerContactUrl, swaggerContactEmail))
+                //版本号
+                .version(swaggerVersion)
                 //描述
-                .description("描述：用于测试集成swagger接口")
-                //作者信息
-                .contact(new Contact("miqiang",null,null))
-                //版本
-                .version("版本号：1.0")
-                //构建
+                .description(swaggerDescription)
                 .build();
-
-
     }
-
-
 }
+
