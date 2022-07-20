@@ -10,6 +10,7 @@ import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
  * @author miqiang
@@ -18,6 +19,7 @@ import springfox.documentation.spring.web.plugins.Docket;
  * @createTime 2022-07-19  19:13
  */
 @Configuration
+@EnableSwagger2
 public class SwaggerConfig {
 
     @Value(value = "${swagger.enabled}")

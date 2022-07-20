@@ -52,12 +52,6 @@ swagger:
   title: 测试接口
   description: 描述测试接口
   version: 1.0.0
-  contact:
-    name: miqiang
-    url:
-    email: 895318625@qq.com
-  package: com.miqiang
-  base-path: /**
-  exclude-path: /error, /ops/**
+
 
 

@@ -28,7 +28,7 @@ public class BaodingApplication {
                 "Application  is running! Access URLs:\n\t" +
                 "Local: \t\thttp://localhost:" + port + path + "/\n\t" +
                 "External: \thttp://127.0.0.1:" + port + path + "/\n\t" +
-                "Swagger文档: \thttp://127.0.0.1:" + port + path + "/swagger-ui/index.html\n" +
+                "Swagger文档: \thttp://127.0.0.1:" + port + path + "/doc.html\n" +
                 "----------------------------------------------------------");
     }
 
