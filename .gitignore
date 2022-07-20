@@ -6,6 +6,7 @@ target/
 
 **/.mvn/
 **/.iml
+**/mvn*
 
 ### STS ###
 .apt_generated
