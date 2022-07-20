@@ -18,6 +18,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -41,6 +43,8 @@ public class UserController {
 
     @Autowired
     private IUserService service;
+    @Autowired
+    private RedissonClient redissonClient;
 
     @GetMapping("findPage")
     @ApiOperation(value = "分页查询用户信息")
@@ -59,39 +63,44 @@ public class UserController {
         if (StringUtils.isNotBlank(errMsg)) {
             return Result.error(errMsg, null);
         }
-        // 账号不能重复
-        LambdaQueryWrapper<User> queryWrapper = Wrappers.lambdaQuery();
-        queryWrapper.eq(User::getAccount, user.getAccount())
-                .ne(StringUtils.isNoneBlank(user.getId()), User::getId, user.getId());
-        List<User> existDatas = service.list(queryWrapper);
-        if (null != existDatas && !existDatas.isEmpty()) {
-            return Result.error("账号不能重复！");
-        }
-        boolean isSuccess;
-        if (StringUtils.isBlank(user.getId())) {
-            // 默认值
-            String realPass = DigestUtils.md5Hex(PublicParams.DEFAULT_PASS + user.getSalt());
-            user.setPassword(realPass);
-            user.setSalt(PublicParams.SALT);
-            user.setState(PublicParams.STATE_ENABLE);
-            user.setLogingErrCount(0);
-            user.setScore(BigDecimal.ZERO);
-            isSuccess = service.save(user);
-        } else {
-            User oldData = service.getById(user.getId());
-            if (null == oldData) {
-                return Result.error(PublicMsgs.UPDATE_DATA_NOT_EXIST);
+        RLock lock = redissonClient.getLock("saveUser");
+        try {
+            // 账号不能重复
+            LambdaQueryWrapper<User> queryWrapper = Wrappers.lambdaQuery();
+            queryWrapper.eq(User::getAccount, user.getAccount())
+                    .ne(StringUtils.isNoneBlank(user.getId()), User::getId, user.getId());
+            List<User> existDatas = service.list(queryWrapper);
+            if (null != existDatas && !existDatas.isEmpty()) {
+                return Result.error("账号不能重复！");
             }
-            if (!oldData.getAccount().equals(user.getAccount())) {
-                return Result.error("不能修改账号！");
+            boolean isSuccess;
+            if (StringUtils.isBlank(user.getId())) {
+                // 默认值
+                String realPass = DigestUtils.md5Hex(PublicParams.DEFAULT_PASS + user.getSalt());
+                user.setPassword(realPass);
+                user.setSalt(PublicParams.SALT);
+                user.setState(PublicParams.STATE_ENABLE);
+                user.setLogingErrCount(0);
+                user.setScore(BigDecimal.ZERO);
+                isSuccess = service.save(user);
+            } else {
+                User oldData = service.getById(user.getId());
+                if (null == oldData) {
+                    return Result.error(PublicMsgs.UPDATE_DATA_NOT_EXIST);
+                }
+                if (!oldData.getAccount().equals(user.getAccount())) {
+                    return Result.error("不能修改账号！");
+                }
+                BeanUtils.copyProperties(user, oldData, "id", "account", "password", "salt", "state", "logingErrCount");
+                isSuccess = service.updateById(user);
             }
-            BeanUtils.copyProperties(user, oldData, "id", "account", "password", "salt", "state", "logingErrCount");
-            isSuccess = service.updateById(user);
+            if (isSuccess) {
+                return Result.OK(PublicMsgs.SAVE_SUCCESS);
+            }
+            return Result.error(PublicMsgs.SAVE_ERROR);
+        } finally {
+            lock.unlock();
         }
-        if (isSuccess) {
-            return Result.OK(PublicMsgs.SAVE_SUCCESS);
-        }
-        return Result.error(PublicMsgs.SAVE_ERROR);
     }
 
     @PostMapping("isLock")
