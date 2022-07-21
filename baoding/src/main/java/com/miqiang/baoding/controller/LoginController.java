@@ -1,5 +1,6 @@
 package com.miqiang.baoding.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.miqiang.baoding.vo.UserVo;
 import com.miqiang.baoding.common.PublicMsgs;
 import com.miqiang.baoding.common.PublicParams;
@@ -26,7 +27,7 @@ import java.util.Optional;
  * @createTime 2022-07-07  10:33
  */
 @RestController
-@RequestMapping("login")
+@RequestMapping("")
 public class LoginController {
 
     @Autowired
@@ -66,8 +67,8 @@ public class LoginController {
         // 用户权限(前端用于控制按钮是否显示)
         // 所有字典翻译
         // 设置token缓存有效时间
-        redisUtil.set(CommonConstant.PREFIX_USER_TOKEN + account, userVo);
-        redisUtil.expire(CommonConstant.PREFIX_USER_TOKEN + account, JwtUtil.EXPIRE_TIME*2 / 1000);
+        String val = JSONObject.toJSONString(userVo);
+        redisUtil.set(CommonConstant.PREFIX_USER_TOKEN + account, val, JwtUtil.EXPIRE_TIME*2 / 1000);
         return Result.OK("登录成功!", userVo);
     }
 
