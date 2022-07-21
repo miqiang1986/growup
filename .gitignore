@@ -8,6 +8,7 @@ target/
 **/.iml
 **/mvn*
 **/target/
+**/rebel.xml
 
 ### STS ###
 .apt_generated
