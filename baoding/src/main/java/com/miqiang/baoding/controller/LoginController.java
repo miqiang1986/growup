@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
 
 /**
@@ -70,6 +72,31 @@ public class LoginController {
         String val = JSONObject.toJSONString(userVo);
         redisUtil.set(CommonConstant.PREFIX_USER_TOKEN + account, val, JwtUtil.EXPIRE_TIME*2 / 1000);
         return Result.OK("登录成功!", userVo);
+    }
+
+    /**
+     * 退出登录
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/logout")
+    public Result<Object> logout(HttpServletRequest request) {
+        //用户退出逻辑
+        String token = request.getHeader(CommonConstant.X_ACCESS_TOKEN);
+        if(StringUtils.isBlank(token)) {
+            return Result.error("退出登录失败！");
+        }
+        String account = JwtUtil.getUsername(token);
+        User user = userService.getByAccount(account);
+        if(user!=null) {
+            //清空用户登录信息
+            redisUtil.del(CommonConstant.PREFIX_USER_TOKEN + account);
+            //调用shiro的logout
+//            SecurityUtils.getSubject().logout();
+            return Result.ok("退出登录成功！");
+        }else {
+            return Result.error("Token无效!");
+        }
     }
 
 }
