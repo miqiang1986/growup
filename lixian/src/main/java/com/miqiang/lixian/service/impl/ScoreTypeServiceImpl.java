@@ -1,8 +1,8 @@
-package com.miqiang.baoding.service.impl;
+package com.miqiang.lixian.service.impl;
 
-import com.miqiang.baoding.entity.ScoreType;
-import com.miqiang.baoding.mapper.ScoreTypeMapper;
-import com.miqiang.baoding.service.IScoreTypeService;
+import com.miqiang.lixian.entity.ScoreType;
+import com.miqiang.lixian.mapper.ScoreTypeMapper;
+import com.miqiang.lixian.service.IScoreTypeService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
  * </p>
  *
  * @author miqiang
- * @since 2022-07-05
+ * @since 2022-07-22
  */
 @Service
 public class ScoreTypeServiceImpl extends ServiceImpl<ScoreTypeMapper, ScoreType> implements IScoreTypeService {

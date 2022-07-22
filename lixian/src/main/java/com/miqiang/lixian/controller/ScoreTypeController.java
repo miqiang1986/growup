@@ -1,4 +1,4 @@
-package com.miqiang.baoding.controller;
+package com.miqiang.lixian.controller;
 
 
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,12 +11,10 @@ import org.springframework.web.bind.annotation.RestController;
  * </p>
  *
  * @author miqiang
- * @since 2022-07-05
+ * @since 2022-07-22
  */
 @RestController
-@RequestMapping("/baoding/score")
-public class ScoreController {
-
-
+@RequestMapping("/lixian/scoreType")
+public class ScoreTypeController {
 
 }

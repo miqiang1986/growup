@@ -1,6 +1,6 @@
-package com.miqiang.baoding.service;
+package com.miqiang.lixian.service;
 
-import com.miqiang.baoding.entity.ScoreType;
+import com.miqiang.lixian.entity.ScoreType;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * </p>
  *
  * @author miqiang
- * @since 2022-07-05
+ * @since 2022-07-22
  */
 public interface IScoreTypeService extends IService<ScoreType> {
 

@@ -1,12 +1,13 @@
-package com.miqiang.baoding.entity;
+package com.miqiang.lixian.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import java.io.Serializable;
-import java.math.BigDecimal;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.io.Serializable;
+import java.math.BigDecimal;
 
 /**
  * <p>
@@ -14,7 +15,7 @@ import lombok.Setter;
  * </p>
  *
  * @author miqiang
- * @since 2022-07-05
+ * @since 2022-07-22
  */
 @Getter
 @Setter

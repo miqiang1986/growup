@@ -1,4 +1,4 @@
-package com.miqiang.baoding.util;
+package com.miqiang.lixian.util;
 
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;

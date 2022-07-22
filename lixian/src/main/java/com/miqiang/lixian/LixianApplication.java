@@ -1,6 +1,6 @@
-package com.miqiang.baoding;
+package com.miqiang.lixian;
 
-import com.miqiang.baoding.util.ConvertUtils;
+import com.miqiang.lixian.util.ConvertUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
@@ -10,17 +10,15 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.Environment;
 
-import java.net.UnknownHostException;
-
 @Slf4j
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableFeignClients
 @MapperScan("com.miqiang.**.mapper")
-public class BaodingApplication {
+public class LixianApplication {
 
-    public static void main(String[] args) throws UnknownHostException {
-        ConfigurableApplicationContext application = SpringApplication.run(BaodingApplication.class, args);
+    public static void main(String[] args) {
+        ConfigurableApplicationContext application = SpringApplication.run(LixianApplication.class, args);
         Environment env = application.getEnvironment();
 //        String ip = InetAddress.getLocalHost().getHostAddress();
         String port = env.getProperty("server.port");

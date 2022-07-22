@@ -1,20 +1,26 @@
 package com.miqiang.baoding.controller;
 
+import com.miqiang.baoding.feign.TestFeign;
 import com.miqiang.baoding.util.RedisUtil;
 import com.miqiang.baoding.util.Result;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author miqiang
  * @createTime 2022-07-07  09:38
  * @version 1.0
  */
+@RequestMapping("test")
+@RestController
 public class TestController {
 
     @Autowired
     private RedisUtil redisUtil;
+    @Autowired
+    private TestFeign testFeign;
 
     /**
      * test redis set
@@ -39,12 +45,8 @@ public class TestController {
         return Result.OK(o);
     }
 
-    @Value("${name}")
-    private String aa;
-
-    @RequestMapping("test")
-    public String test() {
-        System.out.println("请求结果"+aa);
-        return aa;
+    @PostMapping("test")
+    public Result<?> test() {
+        return testFeign.test();
     }
 }

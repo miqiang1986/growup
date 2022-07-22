@@ -1,12 +1,8 @@
-package com.miqiang.baoding.entity;
+package com.miqiang.lixian.entity;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-import java.io.Serializable;
-import java.time.LocalDate;
-import java.util.Date;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -14,19 +10,22 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.io.Serializable;
+import java.util.Date;
+
 /**
  * <p>
- * 
+ * 成绩记录
  * </p>
  *
  * @author miqiang
- * @since 2022-07-05
+ * @since 2022-07-22
  */
 @Getter
 @Setter
-@TableName("tab_score")
-@ApiModel(value = "Score对象", description = "")
-public class Score implements Serializable {
+@TableName("tab_score_log")
+@ApiModel(value = "ScoreLog对象", description = "成绩记录")
+public class ScoreLog implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

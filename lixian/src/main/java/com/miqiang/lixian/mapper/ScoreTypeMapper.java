@@ -1,8 +1,7 @@
-package com.miqiang.baoding.mapper;
+package com.miqiang.lixian.mapper;
 
-import com.miqiang.baoding.entity.ScoreType;
+import com.miqiang.lixian.entity.ScoreType;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.springframework.stereotype.Repository;
 
 /**
  * <p>
@@ -10,9 +9,8 @@ import org.springframework.stereotype.Repository;
  * </p>
  *
  * @author miqiang
- * @since 2022-07-05
+ * @since 2022-07-22
  */
-@Repository
 public interface ScoreTypeMapper extends BaseMapper<ScoreType> {
 
 }
