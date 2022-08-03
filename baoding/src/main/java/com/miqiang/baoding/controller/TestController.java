@@ -1,12 +1,15 @@
 package com.miqiang.baoding.controller;
 
 import com.miqiang.baoding.feign.TestFeign;
+import com.miqiang.baoding.service.IUserService;
 import com.miqiang.baoding.util.RedisUtil;
 import com.miqiang.baoding.util.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
 
 /**
  * @author miqiang
@@ -19,8 +22,10 @@ public class TestController {
 
     @Autowired
     private RedisUtil redisUtil;
-    @Autowired
+    @Resource
     private TestFeign testFeign;
+    @Autowired
+    private IUserService userService;
 
     /**
      * test redis set
@@ -49,4 +54,11 @@ public class TestController {
     public Result<?> test() {
         return testFeign.test();
     }
+
+    // sentinel监控测试---注解
+    @PostMapping("testCentinel")
+    public Result<?> testCentinel() {
+        return userService.testCentinel();
+    }
+
 }

@@ -2,6 +2,7 @@ package com.miqiang.baoding.service;
 
 import com.miqiang.baoding.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.miqiang.baoding.util.Result;
 
 /**
  * <p>
@@ -21,4 +22,6 @@ public interface IUserService extends IService<User> {
      * @return com.miqiang.baoding.entity.User
      **/
     User getByAccount(String accout);
+
+    Result<?> testCentinel();
 }
