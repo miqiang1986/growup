@@ -6,14 +6,12 @@ import com.miqiang.gateway.util.RedisUtil;
 import com.miqiang.gateway.util.UserVo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.annotation.Order;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
@@ -60,14 +58,16 @@ public class AuthrizeFilter implements GlobalFilter {
         if (null != tokens && !tokens.isEmpty()) {
             String token = tokens.get(0);
             String username = JwtUtil.getUsername(token);
-            String obj = redisUtil.get(PREFIX_USER_TOKEN + username).toString();
-            UserVo userVo = JSONObject.parseObject(obj, UserVo.class);
-            if (null != userVo) {
-                // 防止通过账号自己生成一个token
-                if (token.equals(userVo.getToken())) {
-                    // todo 验证用户权限
-                    // 放行
-                    return chain.filter(exchange);
+            Object obj = redisUtil.get(PREFIX_USER_TOKEN + username);
+            if (null != obj) {
+                UserVo userVo = JSONObject.parseObject(obj.toString(), UserVo.class);
+                if (null != userVo) {
+                    // 防止通过账号自己生成一个token
+                    if (token.equals(userVo.getToken())) {
+                        // todo 验证用户权限
+                        // 放行
+                        return chain.filter(exchange);
+                    }
                 }
             }
         }

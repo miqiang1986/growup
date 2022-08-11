@@ -28,7 +28,16 @@ spring:
           predicates:
             - Path=/baoding/** #路径匹配规则
           filters:
-            - StripPrefix=1 #1的意思是转发的时候会吧path中的baoding ，也就是第一个去掉。
+            args:
+              - StripPrefix=1 #1的意思是转发的时候会吧path中的baoding ，也就是第一个去掉。
+        - id: LIXIAN
+          uri: lb://lixian
+          predicates:
+            - Path=/lixian/**
+          filters:
+            - StripPrefix=1
+
+
 
 #        - id: SERVICE-TWO
 #          uri: lb://service-two
