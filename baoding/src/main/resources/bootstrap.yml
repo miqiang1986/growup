@@ -41,6 +41,7 @@ spring:
             password: ${spring.cloud.nacos.config.password}
             groupId: DEFAULT_GROUP
             dataId: ${spring.application.name}
+            # flow代表流程控制，degrade代表熔断规则
             rule-type: flow
             data-type: json
 

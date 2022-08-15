@@ -113,17 +113,14 @@
         </dependency>
         <!--sentinel nacos-->
         <dependency>
-            <groupId>com.alibaba.cloud</groupId>
-            <artifactId>spring-cloud-alibaba-sentinel-datasource</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.alibaba.csp</groupId>
             <artifactId>sentinel-datasource-nacos</artifactId>
             <version>1.8.0</version>
         </dependency>
+        <!-- sentinel 底层通过actuator来进行监控-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
 
         <dependency>
