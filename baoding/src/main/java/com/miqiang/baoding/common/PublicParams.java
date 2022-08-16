@@ -31,4 +31,7 @@ public class PublicParams {
      */
     public static final Integer MAX_LOGIN_ERR = 3;
 
+    public static final String YES_NO_Y = "1";
+    public static final String YES_NO_N = "0";
+
 }

@@ -38,7 +38,7 @@ import java.util.List;
  */
 @Api(tags = "用户信息")
 @RestController
-@RequestMapping("/baoding/user")
+@RequestMapping("/user")
 public class UserController {
 
     @Autowired

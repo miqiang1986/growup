@@ -59,4 +59,17 @@ public class User implements Serializable {
 
     @ApiModelProperty("总分")
     private BigDecimal score;
+
+    @ApiModelProperty("家长id")
+    private String parentId;
+
+    @ApiModelProperty("qq")
+    private String qq;
+
+    @ApiModelProperty("微信")
+    private String wechat;
+
+    @ApiModelProperty("头像")
+    private String headIcon;
+
 }

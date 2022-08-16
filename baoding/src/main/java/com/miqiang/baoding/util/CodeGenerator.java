@@ -13,13 +13,14 @@ public class CodeGenerator {
 
     public static void main(String[] args) {
         FastAutoGenerator.create("jdbc:mysql://192.168.137.200:3339/test?serverTimezone=UTC", "root", "123456")
-                // 全局配置
-                .globalConfig((scanner, builder) -> builder.author(scanner.apply("请输入作者名称："))
+                // 全局配置 scanner.apply("请输入作者名称：")
+                .globalConfig((scanner, builder) -> builder.author("miqiang")
                         .enableSwagger().fileOverride()
                         .outputDir("E://IdeaProjects/growup/baoding/src/main/java"))
-                // 包配置
-                .packageConfig((scanner, builder) -> builder.parent(scanner.apply("请输入包名："))
-                    .moduleName(scanner.apply("请输入父包模块名：")))
+                // 包配置 scanner.apply("请输入包名：")
+                .packageConfig((scanner, builder) -> builder.parent("com.miqiang.baoding")
+//                    .moduleName("baoding")
+                )
                 // 策略配置
                 .strategyConfig((scanner, builder) -> builder.addInclude(getTables(scanner.apply("请输入表名，多个英文逗号分隔？所有输入 all")))
                         .addTablePrefix("tab_", "les_")
