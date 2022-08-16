@@ -19,6 +19,31 @@ spring:
       discovery:
         server-addr: 192.168.137.200:9901
         namespace: ccc38bfc-827a-43c6-bec1-fda3537881e9
+    # sentinel配置
+    sentinel:
+      transport:
+        # 配置Sentinel dashboard地址
+        dashboard: 192.168.137.200:8858
+        # 应用与Sentinel控制台交互的端口，应用本地会起一个该端口占用的HttpServer
+        # 默认8719端口，假如端口被占用，依次+1，直到找到未被占用端口
+        # port: 8719
+      eager: true
+      web-context-unify: true
+      filter:
+        # jar包冲突
+        enabled: false
+      datasource:
+        ds1:
+          nacos:
+            server-addr: ${spring.cloud.nacos.config.server-addr}
+            namespace: ${spring.cloud.nacos.config.namespace}
+            username: ${spring.cloud.nacos.config.username}
+            password: ${spring.cloud.nacos.config.password}
+            groupId: DEFAULT_GROUP
+            dataId: ${spring.application.name}
+            # flow代表流程控制，degrade代表熔断规则
+            rule-type: flow
+            data-type: json
 
 #---------------------------  mybatis-plus-------------------------
 #mybatis plus 设置
@@ -45,6 +70,8 @@ mybatis-plus:
 # Logger Config
 logging:
   level:
+    com.miqiang: debug
+    springfox: error
     com.baomidou.mybatisplus.samples: debug
 
 swagger:

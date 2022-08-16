@@ -72,6 +72,8 @@ mybatis-plus:
 # Logger Config
 logging:
   level:
+    com.miqiang: debug
+    springfox: error
     com.baomidou.mybatisplus.samples: debug
 
 swagger:
